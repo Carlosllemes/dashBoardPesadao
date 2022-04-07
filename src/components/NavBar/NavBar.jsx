@@ -20,10 +20,10 @@ class NavBar extends Component {
           {/* Navbar Begin */}
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link className="menu-link">
+              <Nav.Link as="div" className="menu-link">
                 <Link to="/">Tarefas</Link>
               </Nav.Link>
-              <Nav.Link>
+              <Nav.Link as="div">
                 <Link to="/task">Task</Link>
               </Nav.Link>
               {/* Dropdown */}
@@ -34,7 +34,7 @@ class NavBar extends Component {
               {/*End Dropdown */}
             </Nav>
             <Nav>
-              <Nav.Link>
+              <Nav.Link as="div">
                 <Link to="/meme">Meme</Link>
               </Nav.Link>
             </Nav>

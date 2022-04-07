@@ -3,19 +3,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "../src/main.scss";
 import "../src/app.scss";
-import Header from "./model/Header";
+import Routes from "./model/routes/Routes";
 // import FormSearch from "./components/FormSearch";
 import CardFilterTask from "./components/CardFilterTask";
 import { Container } from "react-bootstrap";
+// import Api from "./services/api";
 
 class App extends Component {
   render() {
     return (
       <>
-        <Header />
+        <Routes />
         {/* <FormSearch /> */}
         <Container className="tasks-section-dashboard">
-          <CardFilterTask />
+          <CardFilterTask nome="alterações" />
         </Container>
       </>
     );

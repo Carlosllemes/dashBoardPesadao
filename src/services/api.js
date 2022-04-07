@@ -1,14 +1,29 @@
-var myHeaders = new Headers();
-myHeaders.append("App-Key", "a4229842b679e1db3bfd96005c5fbac6");
-myHeaders.append("User-Token", "AHU1NfyqFEHuvouXQxY");
+class Api {
+  constructor() {
+    this.myHeaders = new Headers();
+    this.myHeaders.append("App-Key", "a4229842b679e1db3bfd96005c5fbac6");
+    this.myHeaders.append("User-Token", "AHU1NfyqFEHuvouXQxY");
+    this.requestOptions = {
+      method: "GET",
+      headers: this.myHeaders,
+      redirect: "follow",
+    };
+  }
 
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-};
+  getRquest(endPoint) {
+    return this.apiRequest(endPoint);
+  }
 
-fetch("https://runrun.it/api/users", requestOptions)
-  .then(response => response.json())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+  apiRequest(endPoint) {
+    const data = fetch(
+      `https://runrun.it/api/${endPoint}`,
+      this.requestOptions
+    )
+    .then((response) => response.json())
+    .then((resolve) => resolve)
+    .catch((error) => console.log("error", error));
+    return data
+  }
+}
+
+export default Api;
