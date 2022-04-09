@@ -9,85 +9,58 @@ class CardFilterTask extends Component {
     super(props);
     this.amount = 30;
     this.state = {
-      alteracoesDia: 0,
-      alteracoesSemana: 0,
+      alteracoes: 0,
+      selectFilter: 'HOJE'
     };
   }
+  
 
-  async amountTasksToday() {
-    const api = new Api();
+ async response(){
+  const api = new Api();
+  var response = await api.getRquest(
+    "tasks?is_closed=true&user_id=desenvolvimento&limit=100"
+  );
+  return response
+}
+
+
+   amountTasks(days,selectFilter, response) {
+     console.log(response)
     try {
-      var response = await api.getRquest(
-        "tasks?sort_dir=desc&is_closed=true&user_id=desenvolvimento&limit=50"
-      );
-      // let amount = Object.keys(response).length;
-
       let contador = 0;
+      let today = new Date().toLocaleDateString("pt-BR");
       response.map((response) => {
-        let dataTasks = new Date(response.close_date);
-        let todayDate = this.todayDate();
-        let taskDate = dataTasks.toLocaleDateString("pt-BR");
-        console.log(taskDate);
+        let dataTask = new Date(response.close_date).getTime();
+        let dataWeek = this.timeTask(today, days);
 
-        if (taskDate === todayDate) {
-          contador++;
+        if (this.getTypeTask(response.type_name)) {
+          if (dataTask > dataWeek) {
+            contador++;
+          }
         }
-
         return contador;
       });
-      this.setState({ alteracoesDia: contador });
+      this.setState({ alteracoes: contador,selectFilter : selectFilter  });
     } catch (err) {
       console.log(err);
     }
   }
 
-  async amountTasksWeek() {
-    const api = new Api();
-    try {
-      var response = await api.getRquest(
-        "tasks?sort_dir=desc&is_closed=true&user_id=desenvolvimento&limit=150"
-      );
-      // let amount = Object.keys(response).length;
+  timeTask(date, days) {
+    var date = new Date();
+    date.setDate(date.getDate() - days);
+    return date;
+  }
 
-      let contador = 0;
-      response.map((response) => {
-        let dataTasks = new Date(response.close_date);
-        let weekDate = this.weekDate();
-        console.log(weekDate)
-        let taskDate = dataTasks.toLocaleDateString("pt-BR");
-        console.log(taskDate)
-        // console.log(weekDate);
-        // console.log(taskDate);
-
-        if (weekDate > taskDate ) {
-          contador++;
-        }
-
-        return contador;
-      });
-      this.setState({ alteracoesDia: contador });
-    } catch (err) {
-      console.log(err);
+  getTypeTask(task) {
+    if (
+      task == "Produção - Alt Nv. 2" ||
+      task == "Produção - Alt Nv. 1" ||
+      task == "Produção - Alt Nv. 3" ||
+      task == "Produção - Alt Nv. 4"
+    ) {
+      return true;
     }
-  }
-
-
-  weekDate(date) {
-    var date = new Date();
-    date.setDate(date.getDate() - 7);
-    return date.toLocaleDateString("pt-BR");
-  }
-
-  todayDate(date) {
-    var date = new Date();
-    date.setDate(date.getDate());
-    return date.toLocaleDateString("pt-BR");
-  }
-
-  monthDate(date) {
-    var date = new Date();
-    date.setDate(date.getDate());
-    return date.toLocaleDateString("pt-BR");
   }
 
   render() {
@@ -96,10 +69,14 @@ class CardFilterTask extends Component {
         <Card.Body>
           <Container className="info-card--header">
             <Card.Text as="h5">
-              Alterações <span>| Hoje</span>
+              Alterações <span>|{this.state.selectFilter} </span>
             </Card.Text>
 
-            <DropFilterCard amountDay={() => this.amountTasksWeek().bind} />
+            <DropFilterCard
+              amountDay={() => this.amountTasks(1,  "HOJE", this.response()).bind}
+              amountWeek={() => this.amountTasks(7, "SEMANA", this.response()).bind}
+              amounMounth={() => this.amountTasks(30, "MES", this.response()).bind}
+            />
           </Container>
           <Container className="info-card--middle">
             <Card.Img
@@ -107,10 +84,10 @@ class CardFilterTask extends Component {
               src="icons/svg/sites-alteration.svg"
             />
             <Container>
-              <h6>{this.state.alteracoesDia}</h6>
+              <h6>{this.state.alteracoes}</h6>
               <p>
                 <span className="text-success small pt-1 fw-bold">
-                  {/* {this.state.alteracoes} */}
+                  {this.state.alteracoes}
                 </span>
                 <span className="text-muted small pt-2 ps-1">increase</span>
               </p>

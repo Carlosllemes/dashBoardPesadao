@@ -16,8 +16,8 @@ class DropFilterCard extends Component{
 
             <Dropdown.Menu>
               <Dropdown.Item onClick={this.props.amountDay}>Hoje</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Semana</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Mês</Dropdown.Item>
+              <Dropdown.Item onClick={this.props.amountWeek} >Semana</Dropdown.Item>
+              <Dropdown.Item onClick={this.props.amounMounth} >Mês</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )
