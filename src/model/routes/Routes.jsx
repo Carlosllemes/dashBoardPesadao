@@ -1,8 +1,7 @@
-import { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBar from "../../components/NavBar/NavBar";
-class Routes extends Component {
-  render() {
+import NavBar from "../../components/NavBar/";
+export default function Routes() {
+  
     return (
       <Router>
         <NavBar />
@@ -12,6 +11,5 @@ class Routes extends Component {
         </Switch>
       </Router>
     );
-  }
+  
 }
-export default Routes;
