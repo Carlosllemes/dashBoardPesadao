@@ -12,7 +12,8 @@ export default function App() {
         <Routes />
         {/* <FormSearch /> */}
         <Container className="tasks-section-dashboard">
-          <CardFilterTask nome="alterações" />
+          <CardFilterTask typeTask="1" nome="Alterações" />
+          <CardFilterTask typeTask="2" nome="Sites" />
         </Container>
       </>
     );

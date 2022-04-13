@@ -8,6 +8,7 @@ export default function CardFilterTask(props) {
   const [tasks, setTask] = useState([]);
   const [filterTask, setFilterTask] = useState([]);
   const [alteration, setAlteration] = useState([]);
+  const [sites, setSites] = useState();
 
   useEffect(() => {
     const api = new Api();
@@ -22,15 +23,22 @@ export default function CardFilterTask(props) {
     fetchData();
   }, []);
 
-  function amountTasks(data, intervalDate) {
+  function amountTasks(data, intervalDate, type) {
     try {
       let today = new Date().toLocaleDateString("pt-BR");
       let count = 1;
       data.map((data) => {
         let dateCloseTask = new Date(data.close_date).getTime();
         let dateFilter = timeTask(today, intervalDate).getTime();
-        if (getTypeTask(data.type_name)) {
-          if (dateCloseTask > dateFilter) setAlteration(count++);
+        if (dateCloseTask > dateFilter) {
+          if (getTypeTask(data.type_name, type) === 1) {
+            console.log("hahah");
+            setAlteration(count++);
+          }
+          if (getTypeTask(data.type_name, type) === 2) {
+            console.log("hehebebe");
+            setSites(count++);
+          }
         }
         return count;
       });
@@ -45,10 +53,17 @@ export default function CardFilterTask(props) {
     return date;
   }
 
-  function getTypeTask(task) {
-    const regex = /(.Alt*)/;
-    let result = regex.test(task);
-    if (result) return true;
+  function getTypeTask(task, type) {
+    if (type === "1") {
+      const regex = /(.Alt*)/;
+      let result = regex.test(task);
+      if (result) return 1;
+    }
+    if (type === "2") {
+      const regex = /(.Sit*)/;
+      let result = regex.test(task);
+      if (result) return 2;
+    }
   }
 
   return (
@@ -56,20 +71,20 @@ export default function CardFilterTask(props) {
       <Card.Body>
         <Container className="info-card--header">
           <Card.Text as="h5">
-            Alteracoes <span>| {filterTask}</span>
+            {props.nome} <span>| {filterTask}</span>
           </Card.Text>
 
           <DropFilterCard
             amountDay={() => {
-              amountTasks(tasks, 1);
+              amountTasks(tasks, 1, props.typeTask);
               setFilterTask("Hoje");
             }}
             amountWeek={() => {
-              amountTasks(tasks, 7);
+              amountTasks(tasks, 7, props.typeTask);
               setFilterTask("Semana");
             }}
             amountMonth={() => {
-              amountTasks(tasks, 30);
+              amountTasks(tasks, 30, props.typeTask);
               setFilterTask("Mes");
             }}
           />
@@ -80,11 +95,11 @@ export default function CardFilterTask(props) {
             src="icons/svg/sites-alteration.svg"
           />
           <Container>
-            <h6>{alteration}</h6>
+            <h6>
+              {props.typeTask ==="1" ? alteration : sites}
+            </h6>
             <p>
-              <span className="text-success small pt-1 fw-bold">
-                fechados
-              </span>
+              <span className="text-success small pt-1 fw-bold">fechados</span>
             </p>
           </Container>
         </Container>
