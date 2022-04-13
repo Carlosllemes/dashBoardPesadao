@@ -4,10 +4,11 @@
   border: 1px solid #cecece;
   border-radius: 5px;
   box-shadow: $shadown;
+  width: 25%;
 
   .info-card--middle{
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
     
     .container{
       display: flex;
