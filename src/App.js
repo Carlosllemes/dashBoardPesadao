@@ -6,16 +6,29 @@ import CardFilterTask from "./components/CardFilterTask";
 import { Container } from "react-bootstrap";
 
 export default function App() {
-  
-    return (
-      <>
-        <Routes />
-        {/* <FormSearch /> */}
-        <Container className="tasks-section-dashboard">
-          <CardFilterTask typeTask="1" nome="Alterações" />
-          <CardFilterTask typeTask="2" nome="Sites" />
-        </Container>
-      </>
-    );
-  
+  const paramers = {
+    alteracao: "1",
+    site: "2",
+    dev: "3",
+    pende: "4",
+  };
+  const title = {
+    alteracao: "Alterações",
+    site: "Sites",
+    dev: "Desenvolvimento",
+    pende: "Pendentes",
+  };
+
+  return (
+    <>
+      <Routes />
+      {/* <FormSearch /> */}
+      <Container className="tasks-section-dashboard">
+        <CardFilterTask typeTask={paramers.alteracao} title={title.alteracao} />
+        <CardFilterTask typeTask={paramers.site} title={title.site} />
+        <CardFilterTask typeTask={paramers.dev} title={title.dev} />
+        <CardFilterTask typeTask={paramers.pende} title={title.pende} />
+      </Container>
+    </>
+  );
 }

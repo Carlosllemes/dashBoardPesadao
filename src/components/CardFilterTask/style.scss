@@ -5,29 +5,26 @@
   border-radius: 5px;
   box-shadow: $shadown;
   width: 25%;
+  margin-right:5px;
 
   .info-card--middle{
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    
-    .container{
-      display: flex;
-      justify-content: center;
-      flex-direction:column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 
-      p{
-        margin: 0;
-      }
+    svg {
+      margin-left: 10px;
+      height: 40px;
+      color:$third-color;
+      padding: 1px;
+      box-sizing: border-box;
     }
 
   }
 
 
-  img {
-    width: 80px;
-    background-color: $sixty-color;
-    padding: 5px;
-  }
+  
 
   h6 {
     font-size: 30px;
@@ -37,6 +34,7 @@
   .info-card--header{
     display: grid;
     grid-template-columns: 5fr 1fr;
+    height: 36px;
   }
 
   .container {
@@ -46,6 +44,7 @@
   h5.card-text {
     color: $third-color;
     font-weight: bold;
+    font-size: inherit;
 
     span {
       color: $fifth-color;
