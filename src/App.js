@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.js";
-import "../src/main.scss";
 import Routes from "./model/routes/Routes";
 import CardFilterTask from "./components/CardFilterTask";
 import { Container } from "react-bootstrap";
 import Api from "./services/api";
-
+import Chart from "react-google-charts";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.js";
+import "../src/main.scss";
+import _ from "lodash"
 export default function App() {
   const api = new Api();
   const url = "tasks?user_id=desenvolvimento&";
@@ -16,8 +17,45 @@ export default function App() {
   const [progress, setProgress] = useState([]);
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, []);
+
+  var data = [
+    ["14/02/2022", 1],
+    ["14/02/2022", 1],
+    ["14/02/2022", 1],
+    ["14/02/2022", 1],
+    ["14/02/2022", 1],
+    ["14/02/2022", 1],
+    ["15/02/2022", 1],
+    ["15/02/2022", 1],
+    ["15/02/2022", 1],
+    ["16/02/2022", 1],
+    ["16/02/2022", 1],
+    ["16/02/2022", 1],
+    ["16/02/2022", 1],
+    ["17/02/2022", 1],
+    ["17/02/2022", 1],
+    ["17/02/2022", 1],
+  ];
+
+  const teste = (data)=>{
+    const values = _.groupBy(data, (value)=> value[0])
+    const result = _.map(values, (value, key)=>{
+      return [key, _.sumBy(value, (v)=> v[1])]
+    })
+    return [["Dia", "Quantidade"],...result]
+  }
+
+  teste(data)
+
+
+  const options = {
+    chart: {
+      title: "Box Office Earnings in First Two Weeks of Opening",
+      subtitle: "in millions of dollars (USD)",
+    },
+  };
 
   async function fetchData() {
     // fetch all tasks
@@ -70,6 +108,15 @@ export default function App() {
           typeTask={paramers.open}
           title={title.open}
           tasks={openTasks}
+        />
+      </Container>
+      <Container>
+        <Chart
+          chartType="Line"
+          width="100%"
+          height="400px"
+          data={teste(data)}
+          options={options}
         />
       </Container>
     </>
