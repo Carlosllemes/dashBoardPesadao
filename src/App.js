@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Routes from "./model/routes/Routes";
 import CardFilterTask from "./components/CardFilterTask";
 import CloseBarChart from "./components/BarChart/close_task";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Api from "./services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
@@ -16,34 +16,6 @@ export default function App() {
   const [closeTasks, setCloseTasks] = useState([]);
   const [openTasks, setOpenTasks] = useState([]);
   const [progress, setProgress] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const paramers = {
-    alteracao: "1",
-    site: "2",
-    progress: "3",
-    open: "4",
-  };
-
-  const title = {
-    alteracao: "Alterações",
-    site: "Sites",
-    progress: "Desenvolvimento",
-    open: "Pendentes",
-  };
-
-  const groupByClosed = (data) => {
-    const values = _.groupBy(data, (value) =>
-      new Date(value.close_date).toLocaleDateString("pt-br")
-    );
-    const result = _.map(values, (value, key) => {
-      return [key, _.sumBy(value, (v) => 1)];
-    });
-    return [["Dia", "Quantidade"], ...result];
-  };
 
   async function fetchData() {
     // fetch all tasks
@@ -59,35 +31,92 @@ export default function App() {
     setOpenTasks(open_tasks);
   }
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const paramers = {
+    alteracao: {
+      type: "1",
+      name: "Alterações",
+    },
+    site: {
+      type: "2",
+      name: "Sites",
+    },
+    progress: {
+      type: "3",
+      name: "Desenvolvimento",
+    },
+    open: {
+      type: "4",
+      name: "Pendentes",
+    },
+  };
+
+  //Funcao busca dados json type_name
+  const closeByTypeName = _.groupBy(closeTasks, (value) => value.type_name);
+  //Funcao busca dados json responsible_name
+  const closeByTypeResponsible = _.groupBy(
+    closeTasks,
+    (value) => value.responsible_name
+  );
+  //Funcao busca dados json close_date
+  const closeByDate = _.groupBy(closeTasks, (value) =>
+    new Date(value.close_date).toLocaleDateString("pt-br")
+  );
+
+  // Agrupa as colunas passadas pelos dados
+  const groupBy = (data, column, row) => {
+    // faz uma interacao para cada valor da tabela
+    const result = _.map(data, (value, key) => {
+      // soma os valores das linhas , neste caso o padrao é 1
+      return [key, _.sumBy(value, (v) => 1)];
+    });
+    // adiciona os dados ao array result
+    return [[column, row], ...result];
+  };
+
   return (
     <>
       <Routes />
       {/* <FormSearch /> */}
       <Container className="tasks-section-dashboard">
         <CardFilterTask
-          typeTask={paramers.alteracao}
-          title={title.alteracao}
+          typeTask={paramers.alteracao.type}
+          title={paramers.alteracao.name}
           filterCard={true}
           tasks={closeTasks}
         />
         <CardFilterTask
-          typeTask={paramers.site}
-          title={title.site}
+          typeTask={paramers.site.type}
+          title={paramers.site.name}
           filterCard={true}
           tasks={closeTasks}
         />
         <CardFilterTask
-          typeTask={paramers.progress}
-          title={title.progress}
+          typeTask={paramers.progress.type}
+          title={paramers.progress.name}
           tasks={progress}
         />
         <CardFilterTask
-          typeTask={paramers.open}
-          title={title.open}
+          typeTask={paramers.open.type}
+          title={paramers.open.name}
           tasks={openTasks}
         />
       </Container>
-      <CloseBarChart teste={groupByClosed(closeTasks)} chartType={"BarChart"} />
+      <Container>
+        <Row>
+          <CloseBarChart
+            groupBy={groupBy(closeByDate, "Quantidade", "Dia")}
+            chartType={"LineChart"}
+            hAxis={-1}
+          />
+        <CloseBarChart groupBy={groupBy(closeByTypeName, "Tipo", "Quantidade")} chartType={"LineChart"} />
+        </Row>
+      </Container>
+
+      {/* {/* <CloseBarChart groupBy={groupBy(closeByTypeName, "Tipo", "Quantidade")} chartType={"BarChart"} /> */}
     </>
   );
 }
