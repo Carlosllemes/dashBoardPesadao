@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDisplay,
@@ -15,6 +15,10 @@ export default function CardFilterTask(props) {
   const [alteration, setAlteration] = useState([]);
   const [filterTask, setFilterTask] = useState([]);
 
+  useEffect(() => {
+    countTypeTask(props.tasks, 2, props.typeTask);
+    setFilterTask("Hoje");
+  }, []);
 
   function countTypeTask(data, intervalDate, type) {
     try {
