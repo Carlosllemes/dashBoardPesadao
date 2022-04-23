@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import Routes from "./model/routes/Routes";
 import CardFilterTask from "./components/CardFilterTask";
-import CloseBarChart from "./components/BarChart/close_task";
+import LineChart from "./components/LineChart";
+import BarChart from "./components/BarChart";
 import { Container, Row, Col } from "react-bootstrap";
 import Api from "./services/api";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import "../src/main.scss";
 import _ from "lodash";
+import { ThemeProvider } from "styled-components";
 
 export default function App() {
   const api = new Api();
@@ -17,10 +19,22 @@ export default function App() {
   const [openTasks, setOpenTasks] = useState([]);
   const [progress, setProgress] = useState([]);
 
+  const theme = {
+    colors:{
+      firstColor: '#04acdc',
+      secondColor: 'hsl(225, 87%, 67%)',
+      thirdColor: '#045c8c',
+      fourthColor: '#688292',
+      fifthColor: '#b3cfdb',
+      sixtyColor:'#f6f6fe',
+      shadown: '0px 0 30px #0129701a',
+    },
+  }
+
   async function fetchData() {
     // fetch all tasks
     const closed_task = await api.getRquest(
-      url + "sort=close_date&sort_dir=desc&is_closed=true&limit=50"
+      url + "sort=close_date&sort_dir=desc&is_closed=true&limit=10"
     );
     setCloseTasks(closed_task);
 
@@ -78,9 +92,8 @@ export default function App() {
   };
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <Routes />
-      {/* <FormSearch /> */}
       <Container className="tasks-section-dashboard">
         <CardFilterTask
           typeTask={paramers.alteracao.type}
@@ -105,18 +118,36 @@ export default function App() {
           tasks={openTasks}
         />
       </Container>
-      <Container>
+      <Container className="mt-2">
         <Row>
-          <CloseBarChart
+          <Col>
+          <LineChart
             groupBy={groupBy(closeByDate, "Quantidade", "Dia")}
-            chartType={"LineChart"}
-            hAxis={-1}
+            hAxisDirection={-1}
+            titleChart={"Tarefas fechadas por dia"}
+            LineColor={'#fff'}
           />
-        <CloseBarChart groupBy={groupBy(closeByTypeName, "Tipo", "Quantidade")} chartType={"LineChart"} />
+          </Col>
+          <Col>
+          <LineChart
+            groupBy={groupBy(closeByDate, "Quantidade", "Dia")}
+            hAxisDirection={-1}
+            titleChart={"Tarefas fechadas por dia"}
+            ChartColor={'#04acdc'}
+            LineColor={'#000'}
+          />
+          </Col>
+        </Row>
+        <Row>
+        <Col>
+            <BarChart groupBy={groupBy(closeByTypeName, "Tipo", "Quantidade")} />
+          </Col>
+          <Col>
+            <BarChart groupBy={groupBy(closeByTypeResponsible, "Tipo", "Quantidade")} />
+          </Col>
         </Row>
       </Container>
-
-      {/* {/* <CloseBarChart groupBy={groupBy(closeByTypeName, "Tipo", "Quantidade")} chartType={"BarChart"} /> */}
-    </>
+      </ThemeProvider>
+    
   );
 }

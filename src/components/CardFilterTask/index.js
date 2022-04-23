@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
 import {
   faDisplay,
   faFileSignature,
   faFileCode,
   faFolder,
 } from "@fortawesome/free-solid-svg-icons";
-import { Card, CardGroup, Container } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import DropFilterCard from "../DropFilterCard/";
-import "./style.scss";
 
 export default function CardFilterTask(props) {
   const [sites, setSites] = useState([]);
@@ -74,43 +74,122 @@ export default function CardFilterTask(props) {
     }
   }
 
+  const Title = styled.h5`
+    font-weight: bold;
+    font-size: inherit;
+    color: ${({ theme }) => {
+      return theme.colors.thirdColor;
+    }};
+    span {
+      color: ${({ theme }) => {
+        return theme.colors.fifthColor;
+      }};
+      font-size: 14px;
+      font-weight: bold;
+    }
+  `;
+
+  const Amount = styled.h6`
+    font-size: 30px;
+    margin-bottom: 2px;
+  `;
+  const CardGroup = styled.div`
+    border: 1px solid #cecece;
+    border-radius: 5px;
+    box-shadow: ${({ theme }) => {
+      return theme.colors.shadown;
+    }};
+    text-align: center;
+    box-sizing: border-box;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    width: 25%;
+    heigth: 300px;
+  `;
+
+  const CardMiddle = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    svg {
+      margin-left: 10px;
+      height: 40px;
+      color: ${({ theme }) => {
+        return theme.colors.thirdColor;
+      }};
+      padding: 1px;
+      box-sizing: border-box;
+    }
+  `;
+
+  const CardHeader = styled.div`
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    height: 36px;
+    padding: 2px;
+    div {
+      padding: 2px;
+    }
+    button {
+      background-color: transparent !important;
+      border: none;
+      padding: 0;
+    }
+    svg {
+      color: ${({ theme }) => {
+        return theme.colors.firstColor;
+      }};
+      background-color: ${({ theme }) => {
+        return theme.colors.sixtyColor;
+      }};
+      font-size: 20px;
+      padding: 2px;
+      border-radius: 5px;
+      box-shadow: ${({ theme }) => {
+        return theme.colors.shadown;
+      }};
+    }
+  `;
+
   return (
-    <CardGroup className="info-card">
-      <Card.Body>
-        <Container className="info-card--header">
-          <Card.Text as="h5">
-            {props.title} <span>| {filterTask}</span>
-          </Card.Text>
-          {props.filterCard && (
-            <DropFilterCard
-              amountDay={() => {
-                countTypeTask(props.tasks, 1, props.typeTask);
-                setFilterTask("Hoje");
-              }}
-              amountWeek={() => {
-                countTypeTask(props.tasks, 7, props.typeTask);
-                setFilterTask("Semana");
-              }}
-              amountMonth={() => {
-                countTypeTask(props.tasks, 30, props.typeTask);
-                setFilterTask("Mês");
-              }}
-            />
-          )}
+    <CardGroup>
+      <CardHeader>
+        <Title>
+          {props.title} <span>| {filterTask}</span>
+        </Title>
+
+        {props.filterCard && (
+          <DropFilterCard
+            amountDay={() => {
+              countTypeTask(props.tasks, 1, props.typeTask);
+              setFilterTask("Hoje");
+            }}
+            amountWeek={() => {
+              countTypeTask(props.tasks, 7, props.typeTask);
+              setFilterTask("Semana");
+            }}
+            amountMonth={() => {
+              countTypeTask(props.tasks, 30, props.typeTask);
+              setFilterTask("Mês");
+            }}
+          />
+        )}
+      </CardHeader>
+      <CardMiddle>
+        {props.typeTask === "1" && <FontAwesomeIcon icon={faFileSignature} />}
+        {props.typeTask === "2" && <FontAwesomeIcon icon={faDisplay} />}
+        {props.typeTask === "3" && <FontAwesomeIcon icon={faFileCode} />}
+        {props.typeTask === "4" && <FontAwesomeIcon icon={faFolder} />}
+        <Container>
+          {props.typeTask === "1" && <Amount>{alteration}</Amount>}
+          {props.typeTask === "2" && <Amount>{sites}</Amount>}
+          {props.typeTask === "3" && <Amount>{props.tasks.length}</Amount>}
+          {props.typeTask === "4" && <Amount>{props.tasks.length}</Amount>}
         </Container>
-        <Container className="info-card--middle">
-          {props.typeTask === "1" && <FontAwesomeIcon icon={faFileSignature} />}
-          {props.typeTask === "2" && <FontAwesomeIcon icon={faDisplay} />}
-          {props.typeTask === "3" && <FontAwesomeIcon icon={faFileCode} />}
-          {props.typeTask === "4" && <FontAwesomeIcon icon={faFolder} />}
-          <Container>
-            {props.typeTask === "1" && <h6>{alteration}</h6>}
-            {props.typeTask === "2" && <h6>{sites}</h6>}
-            {props.typeTask === "3" && <h6>{props.tasks.length}</h6>}
-            {props.typeTask === "4" && <h6>{props.tasks.length}</h6>}
-          </Container>
-        </Container>
-      </Card.Body>
+      </CardMiddle>
     </CardGroup>
   );
 }
