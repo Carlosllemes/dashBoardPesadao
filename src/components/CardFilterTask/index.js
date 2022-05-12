@@ -25,7 +25,7 @@ export default function CardFilterTask(props) {
       // Count total of interation
       let count = 1;
       // Map data tasks
-      data.map((data, key) => {
+      data.map((data) => {
         // tasks date closed timestamp
         let dateCloseTask = new Date(data.close_date).getTime();
         let dateFilter = timeTask(intervalDate).getTime();
@@ -75,86 +75,88 @@ export default function CardFilterTask(props) {
   }
 
   const Title = styled.h5`
+  font-weight: bold;
+  font-size: inherit;
+  color: ${({ theme }) => {
+    return theme.colors.thirdColor;
+  }};
+  span {
+    color: ${({ theme }) => {
+      return theme.colors.fifthColor;
+    }};
+    font-size: 14px;
     font-weight: bold;
-    font-size: inherit;
+  }
+`;
+
+const Amount = styled.h6`
+  font-size: 30px;
+  margin-bottom: 2px;
+`;
+const CardGroup = styled.div`
+  border: 1px solid #cecece;
+  border-radius: 5px;
+  box-shadow: ${({ theme }) => {
+    return theme.colors.shadown;
+  }};
+  text-align: center;
+  box-sizing: border-box;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-top: 5px;
+  width: 25%;
+  heigth: 300px;
+`;
+
+const CardMiddle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  svg {
+    margin-left: 10px;
+    height: 40px;
     color: ${({ theme }) => {
       return theme.colors.thirdColor;
     }};
-    span {
-      color: ${({ theme }) => {
-        return theme.colors.fifthColor;
-      }};
-      font-size: 14px;
-      font-weight: bold;
-    }
-  `;
+    padding: 1px;
+    box-sizing: border-box;
+  }
+`;
 
-  const Amount = styled.h6`
-    font-size: 30px;
-    margin-bottom: 2px;
-  `;
-  const CardGroup = styled.div`
-    border: 1px solid #cecece;
+const CardHeader = styled.div`
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  height: 36px;
+  padding: 2px;
+  div {
+    padding: 2px;
+  }
+  button {
+    background-color: transparent !important;
+    border: none;
+    padding: 0;
+  }
+  svg {
+    color: ${({ theme }) => {
+      return theme.colors.firstColor;
+    }};
+    background-color: ${({ theme }) => {
+      return theme.colors.sixtyColor;
+    }};
+    font-size: 20px;
+    padding: 2px;
     border-radius: 5px;
     box-shadow: ${({ theme }) => {
       return theme.colors.shadown;
     }};
-    text-align: center;
-    box-sizing: border-box;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-bottom: 10px;
-    padding-top: 5px;
-    width: 25%;
-    heigth: 300px;
-  `;
-
-  const CardMiddle = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    svg {
-      margin-left: 10px;
-      height: 40px;
-      color: ${({ theme }) => {
-        return theme.colors.thirdColor;
-      }};
-      padding: 1px;
-      box-sizing: border-box;
-    }
-  `;
-
-  const CardHeader = styled.div`
-    display: grid;
-    grid-template-columns: 5fr 1fr;
-    height: 36px;
-    padding: 2px;
-    div {
-      padding: 2px;
-    }
-    button {
-      background-color: transparent !important;
-      border: none;
-      padding: 0;
-    }
-    svg {
-      color: ${({ theme }) => {
-        return theme.colors.firstColor;
-      }};
-      background-color: ${({ theme }) => {
-        return theme.colors.sixtyColor;
-      }};
-      font-size: 20px;
-      padding: 2px;
-      border-radius: 5px;
-      box-shadow: ${({ theme }) => {
-        return theme.colors.shadown;
-      }};
-    }
-  `;
+  }
+`;
+ 
 
   return (
+    
     <CardGroup>
       <CardHeader>
         <Title>

@@ -23,7 +23,7 @@ export default function NavBar () {
                 <Link to="/">Tarefas</Link>
               </Nav.Link>
               <Nav.Link as="div">
-                <Link to="/task">Task</Link>
+                <Link to="/pull">Task</Link>
               </Nav.Link>
               {/* Dropdown */}
               <NavDropdown title="Dropdown" id="collasible-nav-dropdown">

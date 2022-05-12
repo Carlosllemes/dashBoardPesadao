@@ -23,5 +23,5 @@ export default function BarChart(props) {
     },
   };
 
-  return <Chart chartType="PieChart" data={props.groupBy} options={options} />;
+  return <Chart chartType="Bar" data={props.groupBy} options={options} />;
 }
